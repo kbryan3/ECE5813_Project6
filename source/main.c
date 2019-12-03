@@ -41,6 +41,9 @@
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
 #include "fsl_dac.h"
+#include "program1.h"
+#include "led_control.h"
+#include "defines.h"
 
 /* Kernel includes. */
 #include "FreeRTOS.h"
@@ -52,15 +55,13 @@
 /* TODO: insert other definitions and declarations here. */
 /* The software timer period. */
 #define SW_TIMER_PERIOD_MS (69 / portTICK_PERIOD_MS)
-#ifndef M_PI
-	#define	M_PI 3.14159265358979323846
-#endif
-float waveVal;
 uint16_t dacVal[50];
 uint16_t count;
 
+#ifdef PROGRAM1
 /* The callback function. */
 static void SwTimerCallback(TimerHandle_t xTimer);
+#endif
 
 /*
  * @brief   Application entry point.
@@ -74,6 +75,7 @@ int main(void) {
     BOARD_InitBootPeripherals();
   	/* Init FSL debug console. */
     BOARD_InitDebugConsole();
+    initializeLEDs();
 
     //initialize DAC
     dac_config_t dacConfigStruct;
@@ -81,13 +83,9 @@ int main(void) {
     DAC_Init(DAC0, &dacConfigStruct);
     DAC_Enable(DAC0, true);
 
-    //calculate sine Values
-    for(uint8_t i = 0; i < 50; i++)
-    {
-    	waveVal =  sin(((float)(i)/10.0f)*2.0f*M_PI/5.0f)+2.0f; //calculate sinewave
-    	dacVal[i] = (uint16_t)(waveVal * 4096.0f / 3.3f); //convert to DAC Reg value
-    }
+    genDACValues((uint16_t *) &dacVal);
 
+#ifdef PROGRAM1
     count = 0;
     SystemCoreClockUpdate();
     /* Create the software timer. */
@@ -100,6 +98,7 @@ int main(void) {
    xTimerStart(SwTimerHandle, 0);
    /* Start scheduling. */
    vTaskStartScheduler();
+#endif
 
     /* Enter an infinite loop, just incrementing a counter. */
     while(1)
@@ -108,12 +107,16 @@ int main(void) {
     }
 }
 
+#ifdef PROGRAM1
 static void SwTimerCallback(TimerHandle_t xTimer)
 {
-    PRINTF("Tick.\r\n");
+	toggleLED(2);
+	PRINTF("Tick.\r\n");
     DAC_SetBufferValue(DAC0, 0U, dacVal[count++]);
     if(count >=50)
     {
     	count = 0;
     }
+    toggleLED(3);
 }
+#endif
