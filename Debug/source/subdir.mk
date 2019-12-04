@@ -10,6 +10,7 @@ C_SRCS += \
 ../source/main.c \
 ../source/mtb.c \
 ../source/program1.c \
+../source/program2.c \
 ../source/semihost_hardfault.c 
 
 OBJS += \
@@ -19,6 +20,7 @@ OBJS += \
 ./source/main.o \
 ./source/mtb.o \
 ./source/program1.o \
+./source/program2.o \
 ./source/semihost_hardfault.o 
 
 C_DEPS += \
@@ -28,6 +30,7 @@ C_DEPS += \
 ./source/main.d \
 ./source/mtb.d \
 ./source/program1.d \
+./source/program2.d \
 ./source/semihost_hardfault.d 
 
 

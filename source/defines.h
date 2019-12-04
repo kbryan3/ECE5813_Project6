@@ -18,6 +18,6 @@
 
 //Program 1 or 2
 //---------------------
-#define PROGRAM1
+//#define PROGRAM1
 
 #endif /*____DEFINES_H__*/

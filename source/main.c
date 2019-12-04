@@ -42,6 +42,7 @@
 #include "fsl_debug_console.h"
 #include "fsl_dac.h"
 #include "program1.h"
+#include "program2.h"
 #include "led_control.h"
 #include "defines.h"
 
@@ -68,7 +69,9 @@ static void SwTimerCallback(TimerHandle_t xTimer);
  */
 int main(void) {
 
+#ifdef PROGRAM1
 	TimerHandle_t SwTimerHandle = NULL;
+#endif
   	/* Init board hardware. */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
@@ -85,6 +88,11 @@ int main(void) {
 
     genDACValues((uint16_t *) &dacVal);
 
+    xTaskCreate(updateDAC_task, (portCHAR *)"updateDAC_task", configMINIMAL_STACK_SIZE + 10,
+    		NULL, 1, NULL);
+    vTaskStartScheduler();
+
+
 #ifdef PROGRAM1
     count = 0;
     SystemCoreClockUpdate();
@@ -100,7 +108,7 @@ int main(void) {
    vTaskStartScheduler();
 #endif
 
-    /* Enter an infinite loop, just incrementing a counter. */
+    /* Enter an infinite loop*/
     while(1)
     {
 
@@ -111,7 +119,6 @@ int main(void) {
 static void SwTimerCallback(TimerHandle_t xTimer)
 {
 	toggleLED(2);
-	PRINTF("Tick.\r\n");
     DAC_SetBufferValue(DAC0, 0U, dacVal[count++]);
     if(count >=50)
     {
