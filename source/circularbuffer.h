@@ -41,7 +41,7 @@ typedef enum
 
 typedef struct
 {
-	uint8_t * buffer;
+	uint16_t * buffer;
 	uint16_t  head;
 	uint16_t  tail;
 	uint16_t length;
@@ -62,7 +62,7 @@ typedef struct
 *
 *@return BUFF_ERROR whether there was an error during function
 */
-BUFF_ERROR initCircBuffer(CIRCBUFF* buffstruct, uint8_t* buff, uint16_t len);
+BUFF_ERROR initCircBuffer(CIRCBUFF* buffstruct, uint16_t* buff, uint16_t len);
 
 /**
 * @brief Adds an item to the buffer
@@ -72,7 +72,7 @@ BUFF_ERROR initCircBuffer(CIRCBUFF* buffstruct, uint8_t* buff, uint16_t len);
 *
 *@return BUFF_ERROR whether buffer was full
 */
-BUFF_ERROR add(CIRCBUFF* buffstruct, uint8_t item);
+BUFF_ERROR add(CIRCBUFF* buffstruct, uint16_t item);
 
 /**
 * @brief Removes oldest item from buffer
@@ -81,7 +81,7 @@ BUFF_ERROR add(CIRCBUFF* buffstruct, uint8_t item);
 *
 *@return BUFF_ERROR whether buffer was empty
 */
-uint8_t removeItem(CIRCBUFF* buffstruct);
+uint16_t removeItem(CIRCBUFF* buffstruct);
 
 /**
 * @brief Checks if buffer is full

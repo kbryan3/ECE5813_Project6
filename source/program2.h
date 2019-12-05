@@ -22,7 +22,11 @@
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
 #include "fsl_dac.h"
+#include "fsl_adc16.h"
 #include "program1.h"
+#include "led_control.h"
+#include "circularbuffer.h"
+#include "adc.h"
 
 /* Kernel includes. */
 #include "FreeRTOS.h"
@@ -35,5 +39,12 @@
 *@return void
 */
 void updateDAC_task(void *p);
+
+/**
+* @brief Transfers ADC values into a "DSP Buffer" every 64 samples
+*
+*@return void
+*/
+void transferADC_task(void *p);
 
 #endif /*___PROGRAM2_H__*/

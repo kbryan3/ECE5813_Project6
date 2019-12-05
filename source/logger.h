@@ -125,7 +125,7 @@ void log_string(uint8_t * str, logger_level level, function_called func);
 *
 * @return void
 */
-void log_time();
+//void log_time();
 
 /**
 * @brief Prints a temperature in Celsius

@@ -104,7 +104,7 @@ void log_string(uint8_t * str, logger_level level, function_called func)
 		printLevel(level);
 		printFunction(func);
 		PRINTF("%s",str);
-		log_time();
+//		log_time();
 		PRINTF("\n\r");
 #else
 		printf("%s", str);
@@ -151,7 +151,7 @@ void log_int(uint32_t * integer, logger_level level, function_called func)
 	}
 }
 
-void log_time()
+/*void log_time()
 {
 	//converts ticks to time values and prints them
 	//algorithm leveraged from
@@ -165,7 +165,7 @@ void log_time()
 	ticks = ticks - 10 * seconds;
 	PRINTF("%d:%d:%d:%d", hours, minutes, seconds, ticks);
 
-}
+}*/
 
 void printLevel(logger_level level)
 {

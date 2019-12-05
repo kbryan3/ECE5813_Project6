@@ -4,7 +4,9 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../source/adc.c \
 ../source/circularbuffer.c \
+../source/dac.c \
 ../source/led_control.c \
 ../source/logger.c \
 ../source/main.c \
@@ -14,7 +16,9 @@ C_SRCS += \
 ../source/semihost_hardfault.c 
 
 OBJS += \
+./source/adc.o \
 ./source/circularbuffer.o \
+./source/dac.o \
 ./source/led_control.o \
 ./source/logger.o \
 ./source/main.o \
@@ -24,7 +28,9 @@ OBJS += \
 ./source/semihost_hardfault.o 
 
 C_DEPS += \
+./source/adc.d \
 ./source/circularbuffer.d \
+./source/dac.d \
 ./source/led_control.d \
 ./source/logger.d \
 ./source/main.d \

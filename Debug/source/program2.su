@@ -1,1 +1,3 @@
+fsl_adc16.h:500:24:ADC16_GetChannelConversionValue	16	static
 program2.c:15:6:updateDAC_task	32	static
+program2.c:31:6:transferADC_task	40	static

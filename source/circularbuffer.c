@@ -17,7 +17,7 @@
 
 
 
-BUFF_ERROR initCircBuffer(CIRCBUFF* buffstruct, uint8_t* buff, uint16_t len)
+BUFF_ERROR initCircBuffer(CIRCBUFF* buffstruct, uint16_t* buff, uint16_t len)
 {
 	if(buffstruct == NULL || buff == NULL)
 	{
@@ -35,7 +35,7 @@ BUFF_ERROR initCircBuffer(CIRCBUFF* buffstruct, uint8_t* buff, uint16_t len)
 	return BUFFER_PASS;
 }
 
-BUFF_ERROR add(CIRCBUFF* buffstruct, uint8_t item)
+BUFF_ERROR add(CIRCBUFF* buffstruct, uint16_t item)
 {
 	//check if pointers are not null
 	if(buffIsPointerValid(buffstruct) != BUFFER_PASS)
@@ -68,9 +68,9 @@ BUFF_ERROR add(CIRCBUFF* buffstruct, uint8_t item)
 
 }
 
-uint8_t removeItem(CIRCBUFF* buffstruct)
+uint16_t removeItem(CIRCBUFF* buffstruct)
 {
-	uint8_t c = 0;
+	uint16_t c = 0;
 	//check if pointers are not null
 	if(buffIsPointerValid(buffstruct) != BUFFER_PASS)
 	{

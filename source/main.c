@@ -41,8 +41,11 @@
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
 #include "fsl_dac.h"
+#include "fsl_adc16.h"
 #include "program1.h"
 #include "program2.h"
+#include "dac.h"
+#include "adc.h"
 #include "led_control.h"
 #include "defines.h"
 
@@ -58,6 +61,9 @@
 #define SW_TIMER_PERIOD_MS (69 / portTICK_PERIOD_MS)
 uint16_t dacVal[50];
 uint16_t count;
+logger_level log_level;
+adc16_config_t adc16ConfigStruct;
+adc16_channel_config_t adc16ChannelConfigStruct;
 
 #ifdef PROGRAM1
 /* The callback function. */
@@ -79,17 +85,24 @@ int main(void) {
   	/* Init FSL debug console. */
     BOARD_InitDebugConsole();
     initializeLEDs();
+    log_level = 2;
 
     //initialize DAC
-    dac_config_t dacConfigStruct;
-    DAC_GetDefaultConfig(&dacConfigStruct);
-    DAC_Init(DAC0, &dacConfigStruct);
-    DAC_Enable(DAC0, true);
+    initDAC();
 
+    //generate values for DAC
     genDACValues((uint16_t *) &dacVal);
+
+    //initialize ADC
+    initADC();
+
 
     xTaskCreate(updateDAC_task, (portCHAR *)"updateDAC_task", configMINIMAL_STACK_SIZE + 10,
     		NULL, 1, NULL);
+
+    xTaskCreate(transferADC_task, (portCHAR *)"transferADC_task", configMINIMAL_STACK_SIZE,
+        		NULL, 2, NULL);
+
     vTaskStartScheduler();
 
 
