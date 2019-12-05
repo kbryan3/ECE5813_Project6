@@ -27,12 +27,15 @@
 #include "led_control.h"
 #include "circularbuffer.h"
 #include "adc.h"
+#include "dma.h"
 
 /* Kernel includes. */
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
 #include "timers.h"
+
+extern uint16_t dmaBuffer[64];
 /**
 * @brief updates DAC value every .1 seconds
 *

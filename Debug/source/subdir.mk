@@ -7,6 +7,7 @@ C_SRCS += \
 ../source/adc.c \
 ../source/circularbuffer.c \
 ../source/dac.c \
+../source/dma.c \
 ../source/led_control.c \
 ../source/logger.c \
 ../source/main.c \
@@ -19,6 +20,7 @@ OBJS += \
 ./source/adc.o \
 ./source/circularbuffer.o \
 ./source/dac.o \
+./source/dma.o \
 ./source/led_control.o \
 ./source/logger.o \
 ./source/main.o \
@@ -31,6 +33,7 @@ C_DEPS += \
 ./source/adc.d \
 ./source/circularbuffer.d \
 ./source/dac.d \
+./source/dma.d \
 ./source/led_control.d \
 ./source/logger.d \
 ./source/main.d \

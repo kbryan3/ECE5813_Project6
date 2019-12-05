@@ -1,0 +1,4 @@
+fsl_dmamux.h:98:20:DMAMUX_EnableChannel	16	static
+fsl_dmamux.h:128:20:DMAMUX_SetSource	24	static
+dma.c:16:6:initDMA	8	static
+dma.c:29:6:DMA_Callback	16	static

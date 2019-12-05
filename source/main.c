@@ -42,12 +42,15 @@
 #include "fsl_debug_console.h"
 #include "fsl_dac.h"
 #include "fsl_adc16.h"
+#include "fsl_dma.h"
+#include "fsl_dmamux.h"
 #include "program1.h"
 #include "program2.h"
 #include "dac.h"
 #include "adc.h"
 #include "led_control.h"
 #include "defines.h"
+#include "dma.h"
 
 /* Kernel includes. */
 #include "FreeRTOS.h"
@@ -64,6 +67,10 @@ uint16_t count;
 logger_level log_level;
 adc16_config_t adc16ConfigStruct;
 adc16_channel_config_t adc16ChannelConfigStruct;
+dma_handle_t DMA_Handle;
+dma_transfer_config_t transferConfig;
+volatile bool g_Transfer_Done;
+uint16_t dmaBuffer[64];
 
 #ifdef PROGRAM1
 /* The callback function. */
@@ -86,6 +93,7 @@ int main(void) {
     BOARD_InitDebugConsole();
     initializeLEDs();
     log_level = 2;
+    g_Transfer_Done = false;
 
     //initialize DAC
     initDAC();
@@ -95,6 +103,9 @@ int main(void) {
 
     //initialize ADC
     initADC();
+
+    //initialize DMA
+    initDMA();
 
 
     xTaskCreate(updateDAC_task, (portCHAR *)"updateDAC_task", configMINIMAL_STACK_SIZE + 10,
