@@ -293,6 +293,7 @@ void DMA_HandleIRQ(dma_handle_t *handle)
 }
 
 #if defined(FSL_FEATURE_DMA_MODULE_CHANNEL) && (FSL_FEATURE_DMA_MODULE_CHANNEL == 4U)
+
 void DMA0_DriverIRQHandler(void)
 {
     DMA_HandleIRQ(s_DMAHandle[0]);

@@ -23,6 +23,8 @@ void initDMA()
     DMA_Init(DMA0);
     DMA_CreateHandle(&DMA_Handle, DMA0, 0);
     DMA_SetCallback(&DMA_Handle, DMA_Callback, NULL);
+    DMA_EnableInterrupts(DMA0, 0);
+
 }
 
 /* User callback function for DMA transfer. */

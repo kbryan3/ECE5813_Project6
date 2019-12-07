@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 #include "board.h"
 #include "peripherals.h"
 #include "pin_mux.h"
@@ -36,6 +37,7 @@
 #include "timers.h"
 
 extern uint16_t dmaBuffer[64];
+extern bool g_dma_done_flag;
 /**
 * @brief updates DAC value every .1 seconds
 *
@@ -49,5 +51,12 @@ void updateDAC_task(void *p);
 *@return void
 */
 void transferADC_task(void *p);
+
+/**
+* @brief Calculates max, min, average and standard dev values based on ADC input
+*
+*@return void
+*/
+void processSignal_task(void *p);
 
 #endif /*___PROGRAM2_H__*/

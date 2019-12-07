@@ -71,6 +71,7 @@ dma_handle_t DMA_Handle;
 dma_transfer_config_t transferConfig;
 volatile bool g_Transfer_Done;
 uint16_t dmaBuffer[64];
+bool g_dma_done_flag;
 
 #ifdef PROGRAM1
 /* The callback function. */
@@ -94,6 +95,7 @@ int main(void) {
     initializeLEDs();
     log_level = 2;
     g_Transfer_Done = false;
+    g_dma_done_flag = 0;
 
     //initialize DAC
     initDAC();
@@ -109,10 +111,13 @@ int main(void) {
 
 
     xTaskCreate(updateDAC_task, (portCHAR *)"updateDAC_task", configMINIMAL_STACK_SIZE + 10,
-    		NULL, 1, NULL);
+    		NULL, 3, NULL);
 
-    xTaskCreate(transferADC_task, (portCHAR *)"transferADC_task", configMINIMAL_STACK_SIZE,
+    xTaskCreate(transferADC_task, (portCHAR *)"transferADC_task", configMINIMAL_STACK_SIZE + 10,
         		NULL, 2, NULL);
+
+    xTaskCreate(processSignal_task, (portCHAR *)"processSignal_task", configMINIMAL_STACK_SIZE + 500,
+        		NULL, 1, NULL);
 
     vTaskStartScheduler();
 
