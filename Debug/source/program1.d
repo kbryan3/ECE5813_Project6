@@ -6,7 +6,7 @@ source/program1.o source/program1.d: ../source/program1.c \
  ../CMSIS/MKL25Z4_features.h ../drivers/fsl_clock.h \
  ../drivers/fsl_common.h ../drivers/fsl_gpio.h ../board/peripherals.h \
  ../board/pin_mux.h ../board/clock_config.h ../CMSIS/MKL25Z4.h \
- ../utilities/fsl_debug_console.h ../drivers/fsl_dac.h \
+ ../utilities/fsl_debug_console.h ../drivers/fsl_dac.h ../source/logger.h \
  ../freertos/FreeRTOS.h ../freertos/FreeRTOSConfig.h \
  ../freertos/projdefs.h ../freertos/portable.h \
  ../freertos/deprecated_definitions.h ../freertos/portmacro.h \
@@ -54,6 +54,8 @@ source/program1.o source/program1.d: ../source/program1.c \
 ../utilities/fsl_debug_console.h:
 
 ../drivers/fsl_dac.h:
+
+../source/logger.h:
 
 ../freertos/FreeRTOS.h:
 

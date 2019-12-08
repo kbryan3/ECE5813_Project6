@@ -13,7 +13,6 @@
 
 //Log Type Options:
 //--------------------
-//#define DEBUGGING
 #define STATUS
 
 //Program 1 or 2

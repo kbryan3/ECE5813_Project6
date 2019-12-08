@@ -23,5 +23,6 @@ void genDACValues(uint16_t * dacValues)
     	waveVal =  sin(((float)(i)/10.0f)*2.0f*M_PI/5.0f)+2.0f; //calculate sinewave
     	dacValues[i] = (uint16_t)(waveVal * 4096.0f / 3.3f); //convert to DAC Reg value
     }
+    log_string((uint8_t*)"Generate DAC Values", DBUG, GENDACVALUES);
 }
 

@@ -153,10 +153,8 @@ void log_int(uint32_t * integer, logger_level level, function_called func)
 
 /*void log_time()
 {
-	//converts ticks to time values and prints them
-	//algorithm leveraged from
-	//https://stackoverflow.com/questions/50727304/convert-milliseconds-to-hoursminutessecondsmilliseconds-in-c
-	uint32_t ticks = g_ticks;
+	t = clock();
+	uint32_t ticks = (uint32_t) t;
 	uint32_t hours = ticks / 36000;
 	ticks = ticks - 36000 * hours;
 	uint32_t minutes = ticks / 600;
@@ -248,5 +246,25 @@ void printFunction(function_called func)
 	else if(func == UART0_RECEIVE)
 	{
 		PRINTF("UART0_Receive: ");
+	}
+	else if(func == UPDATEDAC_TASK)
+	{
+		PRINTF("updateDAC_task: ");
+	}
+	else if(func == TRANSFERADC_TASK)
+	{
+		PRINTF("transferadc_task: ");
+	}
+	else if(func == PROCESSSIGNAL_TASK)
+	{
+		PRINTF("processSignal_Task: ");
+	}
+	else if(func == MAIN)
+	{
+		PRINTF("main: ");
+	}
+	else if(func == GENDACVALUES)
+	{
+		PRINTF("genDACValues: ");
 	}
 }

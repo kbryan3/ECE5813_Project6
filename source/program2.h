@@ -29,6 +29,7 @@
 #include "circularbuffer.h"
 #include "adc.h"
 #include "dma.h"
+#include "logger.h"
 
 /* Kernel includes. */
 #include "FreeRTOS.h"

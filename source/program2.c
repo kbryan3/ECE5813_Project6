@@ -19,6 +19,7 @@ void updateDAC_task(void *p)
 	uint16_t count = 0;
 	while(1)
 	{
+		log_string((uint8_t*)"Starting Task", DBUG, UPDATEDAC_TASK);
 		//check if mutex is available
 		if(uxSemaphoreGetCount(xLEDMutex))
 		{
@@ -46,9 +47,12 @@ void transferADC_task(void *p)
     initCircBuffer(buffer_ADC, adcVals, 64);
 	uint16_t Adc16ConversionValue;
 	TimerHandle_t ledTimer;
+	uint32_t start;
+	uint32_t end;
 	ledTimer = xTimerCreate("LED_Timer",500,pdFALSE,0,timerLEDOff);
 	while(1)
 	{
+		log_string((uint8_t*)"Starting Task", DBUG, TRANSFERADC_TASK);
 		//check if the LED has been on for .5 seconds and can be released
 		if(	g_halfsecond == 1)
 		{
@@ -57,6 +61,7 @@ void transferADC_task(void *p)
 		}
 		else
 		{
+
 			ADC16_SetChannelConfig(ADC0, 0U, &adc16ChannelConfigStruct);
 			Adc16ConversionValue = ADC16_GetChannelConversionValue(ADC0, 0U);
 			add(buffer_ADC, Adc16ConversionValue);
@@ -70,11 +75,15 @@ void transferADC_task(void *p)
 						dmaBuffer, sizeof(uint16_t), (uint32_t)(buffer_ADC->length*2)
 						,kDMA_MemoryToMemory);
 				DMA_SubmitTransfer(&DMA_Handle, &transferConfig, kDMA_EnableInterrupt);
+				t = clock();
+				start = (uint32_t) t;
 				DMA_StartTransfer(&DMA_Handle);
 				/* Wait for DMA transfer finish */
 				while (g_Transfer_Done != true)
 				{
 				}
+				t = clock();
+				end = (uint32_t) t;
 				initCircBuffer(buffer_ADC, adcVals, 64);
 			}
 		}
@@ -97,6 +106,7 @@ void processSignal_task(void *p)
 	float stand_devVal;
 	while(1)
 	{
+		log_string((uint8_t*)"Starting Task", DBUG, PROCESSSIGNAL_TASK);
 		if(g_Transfer_Done == true)
 		{
 			g_Transfer_Done = false;

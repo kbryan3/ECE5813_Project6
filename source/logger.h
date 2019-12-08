@@ -20,9 +20,10 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <time.h>
 
 
-
+extern clock_t t;
 typedef enum logger_status
 {
 	DISABLED,    //logger is off
@@ -55,7 +56,12 @@ typedef enum function_called
 	REMOVEITEM, //removeItem() called
 	ADD, //add() called
 	UART0_TRANSMIT, //UART0_Transmit() called
-	UART0_RECEIVE	//UART0_Transmit() called
+	UART0_RECEIVE, //UART0_Transmit() called
+	UPDATEDAC_TASK, //updateDAC_Task() called
+	TRANSFERADC_TASK, //transferADC_task() called
+	PROCESSSIGNAL_TASK, //processSignal_task() called
+	MAIN, //main() called
+	GENDACVALUES //genDACValues() called
 
 }function_called;
 

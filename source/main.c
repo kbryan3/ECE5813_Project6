@@ -51,6 +51,7 @@
 #include "led_control.h"
 #include "defines.h"
 #include "dma.h"
+#include "logger.h"
 
 /* Kernel includes. */
 #include "FreeRTOS.h"
@@ -74,6 +75,7 @@ uint16_t dmaBuffer[64];
 bool g_dma_done_flag;
 bool g_halfsecond;
 SemaphoreHandle_t xLEDMutex;
+clock_t t;
 
 #ifdef PROGRAM1
 /* The callback function. */
@@ -89,13 +91,19 @@ int main(void) {
 	TimerHandle_t SwTimerHandle = NULL;
 #endif
   	/* Init board hardware. */
+	t = clock();
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitBootPeripherals();
   	/* Init FSL debug console. */
     BOARD_InitDebugConsole();
     initializeLEDs();
+#ifdef STATUS
     log_level = 2;
+#else
+    log_level = 1;
+#endif
+
     g_Transfer_Done = false;
 	g_halfsecond = 0;
     g_dma_done_flag = 0;
@@ -103,15 +111,18 @@ int main(void) {
 
     //initialize DAC
     initDAC();
+    log_string((uint8_t*)"Initialized DAC: ",DBUG, MAIN);
 
     //generate values for DAC
     genDACValues((uint16_t *) &dacVal);
 
     //initialize ADC
     initADC();
+    log_string((uint8_t*)"Initialized ADC: ",DBUG, MAIN);
 
     //initialize DMA
     initDMA();
+    log_string((uint8_t*)"Initialized DMA: ",DBUG, MAIN);
 
 
     xTaskCreate(updateDAC_task, (portCHAR *)"updateDAC_task", configMINIMAL_STACK_SIZE + 10,
