@@ -72,6 +72,8 @@ dma_transfer_config_t transferConfig;
 volatile bool g_Transfer_Done;
 uint16_t dmaBuffer[64];
 bool g_dma_done_flag;
+bool g_halfsecond;
+SemaphoreHandle_t xLEDMutex;
 
 #ifdef PROGRAM1
 /* The callback function. */
@@ -95,7 +97,9 @@ int main(void) {
     initializeLEDs();
     log_level = 2;
     g_Transfer_Done = false;
+	g_halfsecond = 0;
     g_dma_done_flag = 0;
+    xLEDMutex = xSemaphoreCreateMutex();
 
     //initialize DAC
     initDAC();

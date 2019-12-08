@@ -13,6 +13,7 @@
 
 #include "adc.h"
 
+//initialization was taken from the SDK's DAC_ADC example
 void initADC()
 {
 	ADC16_GetDefaultConfig(&adc16ConfigStruct);

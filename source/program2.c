@@ -12,18 +12,28 @@
 ***********************************************************************/
 #include "program2.h"
 
+static void timerLEDOff(TimerHandle_t xTimer);
+
 void updateDAC_task(void *p)
 {
 	uint16_t count = 0;
 	while(1)
 	{
-		toggleLED(1);
+		//check if mutex is available
+		if(uxSemaphoreGetCount(xLEDMutex))
+		{
+			toggleLED(1);
+		}
 		DAC_SetBufferValue(DAC0, 0U, dacVal[count++]);
 		if(count >=50)
 		{
 			count = 0;
 		}
-		toggleLED(3);
+		//check if mutex is available
+		if(uxSemaphoreGetCount(xLEDMutex))
+		{
+			toggleLED(3);
+		}
 		vTaskDelay(100/portTICK_PERIOD_MS);
 	}
 }
@@ -35,25 +45,39 @@ void transferADC_task(void *p)
     uint16_t * adcVals = (uint16_t *)malloc(64);
     initCircBuffer(buffer_ADC, adcVals, 64);
 	uint16_t Adc16ConversionValue;
+	TimerHandle_t ledTimer;
+	ledTimer = xTimerCreate("LED_Timer",500,pdFALSE,0,timerLEDOff);
 	while(1)
 	{
-		ADC16_SetChannelConfig(ADC0, 0U, &adc16ChannelConfigStruct);
-		Adc16ConversionValue = ADC16_GetChannelConversionValue(ADC0, 0U);
-		add(buffer_ADC, Adc16ConversionValue);
-		if(buffIsFull(buffer_ADC) == BUFFER_FULL)
+		//check if the LED has been on for .5 seconds and can be released
+		if(	g_halfsecond == 1)
 		{
-			DMA_PrepareTransfer(&transferConfig, buffer_ADC->buffer, sizeof(uint16_t),
-					dmaBuffer, sizeof(uint16_t), (uint32_t)(buffer_ADC->length*2)
-					,kDMA_MemoryToMemory);
-    		DMA_SubmitTransfer(&DMA_Handle, &transferConfig, kDMA_EnableInterrupt);
-    		DMA_StartTransfer(&DMA_Handle);
-    		/* Wait for DMA transfer finish */
-			while (g_Transfer_Done != true)
-			{
-			}
-			initCircBuffer(buffer_ADC, adcVals, 64);
+			xSemaphoreGive(xLEDMutex);
+			g_halfsecond = 0;
 		}
-
+		else
+		{
+			ADC16_SetChannelConfig(ADC0, 0U, &adc16ChannelConfigStruct);
+			Adc16ConversionValue = ADC16_GetChannelConversionValue(ADC0, 0U);
+			add(buffer_ADC, Adc16ConversionValue);
+			if(buffIsFull(buffer_ADC) == BUFFER_FULL)
+			{
+				xSemaphoreTake(xLEDMutex, (TickType_t) 0);
+				toggleLED(2);
+				xTimerStart(ledTimer, 0);
+				//following DMA code is edited version of the SDK dma example
+				DMA_PrepareTransfer(&transferConfig, buffer_ADC->buffer, sizeof(uint16_t),
+						dmaBuffer, sizeof(uint16_t), (uint32_t)(buffer_ADC->length*2)
+						,kDMA_MemoryToMemory);
+				DMA_SubmitTransfer(&DMA_Handle, &transferConfig, kDMA_EnableInterrupt);
+				DMA_StartTransfer(&DMA_Handle);
+				/* Wait for DMA transfer finish */
+				while (g_Transfer_Done != true)
+				{
+				}
+				initCircBuffer(buffer_ADC, adcVals, 64);
+			}
+		}
 		vTaskDelay(100/portTICK_PERIOD_MS);
 	}
 }
@@ -129,6 +153,12 @@ void processSignal_task(void *p)
 		vTaskDelay(500/portTICK_PERIOD_MS);
 	}
 
+}
+
+static void timerLEDOff(TimerHandle_t xTimer)
+{
+	toggleLED(3);
+	g_halfsecond = 1;
 }
 
 

@@ -13,6 +13,7 @@
 
 #include "dac.h"
 
+//init code was taken from the SDK's dac_adc example
 void initDAC()
 {
     dac_config_t dacConfigStruct;

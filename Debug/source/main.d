@@ -14,8 +14,8 @@ source/main.o source/main.d: ../source/main.c ../board/board.h \
  ../freertos/mpu_wrappers.h ../freertos/task.h ../freertos/list.h \
  ../freertos/queue.h ../freertos/timers.h ../freertos/task.h \
  ../source/program2.h ../source/led_control.h ../source/circularbuffer.h \
- ../source/logger.h ../source/adc.h ../source/dma.h ../source/dac.h \
- ../source/defines.h ../freertos/semphr.h ../freertos/queue.h
+ ../source/logger.h ../source/adc.h ../source/dma.h ../freertos/semphr.h \
+ ../freertos/queue.h ../source/dac.h ../source/defines.h
 
 ../board/board.h:
 
@@ -101,10 +101,10 @@ source/main.o source/main.d: ../source/main.c ../board/board.h \
 
 ../source/dma.h:
 
-../source/dac.h:
-
-../source/defines.h:
-
 ../freertos/semphr.h:
 
 ../freertos/queue.h:
+
+../source/dac.h:
+
+../source/defines.h:

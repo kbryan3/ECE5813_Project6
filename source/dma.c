@@ -13,6 +13,7 @@
 
 #include "dma.h"
 
+//code is taken from the SDK's dma example
 void initDMA()
 {
 	/* Configure DMAMUX */
@@ -27,7 +28,7 @@ void initDMA()
 
 }
 
-/* User callback function for DMA transfer. */
+/* User callback function for DMA transfer from the SDK DMA example. */
 void DMA_Callback(dma_handle_t *handle, void *param)
 {
     g_Transfer_Done = true;

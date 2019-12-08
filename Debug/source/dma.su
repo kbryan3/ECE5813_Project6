@@ -1,5 +1,5 @@
 fsl_dma.h:361:20:DMA_EnableInterrupts	16	static
 fsl_dmamux.h:98:20:DMAMUX_EnableChannel	16	static
 fsl_dmamux.h:128:20:DMAMUX_SetSource	24	static
-dma.c:16:6:initDMA	8	static
-dma.c:31:6:DMA_Callback	16	static
+dma.c:17:6:initDMA	8	static
+dma.c:32:6:DMA_Callback	16	static

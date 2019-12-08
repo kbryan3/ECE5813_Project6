@@ -35,9 +35,12 @@
 #include "task.h"
 #include "queue.h"
 #include "timers.h"
+#include "semphr.h"
 
 extern uint16_t dmaBuffer[64];
 extern bool g_dma_done_flag;
+extern bool g_halfsecond;
+extern SemaphoreHandle_t xLEDMutex;
 /**
 * @brief updates DAC value every .1 seconds
 *

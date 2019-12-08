@@ -14,7 +14,7 @@ source/program2.o source/program2.d: ../source/program2.c \
  ../freertos/list.h ../freertos/queue.h ../freertos/timers.h \
  ../freertos/task.h ../source/led_control.h ../source/circularbuffer.h \
  ../source/logger.h ../source/adc.h ../source/dma.h ../drivers/fsl_dma.h \
- ../drivers/fsl_dmamux.h
+ ../drivers/fsl_dmamux.h ../freertos/semphr.h ../freertos/queue.h
 
 ../source/program2.h:
 
@@ -99,3 +99,7 @@ source/program2.o source/program2.d: ../source/program2.c \
 ../drivers/fsl_dma.h:
 
 ../drivers/fsl_dmamux.h:
+
+../freertos/semphr.h:
+
+../freertos/queue.h:
