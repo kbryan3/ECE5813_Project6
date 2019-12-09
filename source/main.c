@@ -100,7 +100,6 @@ int main(void) {
     initializeLEDs();
     log_a = 1;
     g_ticks = 0;
-   // Init_SysTick();
 #ifdef STATUS
     log_level = 2;
 #else
@@ -118,7 +117,7 @@ int main(void) {
 
     //generate values for DAC
     genDACValues((uint16_t *) &dacVal);
-
+#ifndef PROGRAM1
     //initialize ADC
     initADC();
     log_string((uint8_t*)"Initialized ADC: ",DBUG, MAIN);
@@ -138,6 +137,7 @@ int main(void) {
         		NULL, 1, NULL);
 
     vTaskStartScheduler();
+#endif
 
 
 #ifdef PROGRAM1
