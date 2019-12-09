@@ -47,8 +47,6 @@ void transferADC_task(void *p)
     initCircBuffer(buffer_ADC, adcVals, 64);
 	uint16_t Adc16ConversionValue;
 	TimerHandle_t ledTimer;
-	uint32_t start;
-	uint32_t end;
 	ledTimer = xTimerCreate("LED_Timer",500,pdFALSE,0,timerLEDOff);
 	while(1)
 	{
@@ -67,6 +65,7 @@ void transferADC_task(void *p)
 			add(buffer_ADC, Adc16ConversionValue);
 			if(buffIsFull(buffer_ADC) == BUFFER_FULL)
 			{
+				add(buffer_ADC, Adc16ConversionValue);
 				xSemaphoreTake(xLEDMutex, (TickType_t) 0);
 				toggleLED(2);
 				xTimerStart(ledTimer, 0);
@@ -75,15 +74,15 @@ void transferADC_task(void *p)
 						dmaBuffer, sizeof(uint16_t), (uint32_t)(buffer_ADC->length*2)
 						,kDMA_MemoryToMemory);
 				DMA_SubmitTransfer(&DMA_Handle, &transferConfig, kDMA_EnableInterrupt);
-				t = clock();
-				start = (uint32_t) t;
+				log_string((uint8_t*)"Starting DMA Transfer: ", STATUS, TRANSFERADC_TASK);
+				log_string((uint8_t*)"Starting DMA Transfer: ", DBUG, TRANSFERADC_TASK);
 				DMA_StartTransfer(&DMA_Handle);
 				/* Wait for DMA transfer finish */
 				while (g_Transfer_Done != true)
 				{
 				}
-				t = clock();
-				end = (uint32_t) t;
+				log_string((uint8_t*)"DMA Transfer Complete: ", STATUS, TRANSFERADC_TASK);
+				log_string((uint8_t*)"DMA Transfer Complete: ", DBUG, TRANSFERADC_TASK);
 				initCircBuffer(buffer_ADC, adcVals, 64);
 			}
 		}
@@ -138,21 +137,21 @@ void processSignal_task(void *p)
 			}
 
 			average = sum/64;
-
+//found std deviation algorithm from www.programiz.com/c-programming/examples/standard-deviation
 			for(uint8_t i = 0; i<64; i++)
 			{
 				stand_dev += pow((dmaBuffer[i])-average,2);
 			}
 
-			stand_devf = sqrtf(((float)stand_dev));
+			stand_devf = sqrtf(((float)stand_dev)/64.0);
 
 			maxVal = max*3.3f/4096.0f;
 			minVal = min*3.3f/4096.0f;
 			averageVal = average*3.3f/4096.0f;
 			stand_devVal = stand_devf*3.3f/4096.0f;
 			runs++;
-			PRINTF("Run Number: %d\n\r Max: %f\n\r Min: %f\n\r Average: %f\n\r "
-					"SD: %f\n\r",runs, maxVal, minVal, averageVal, stand_devVal);
+			PRINTF("Run Number: %d\n\rMax: %f\n\rMin: %f\n\rAverage: %f\n\r"
+					"SD: %f\n\r\n\r\n\r",runs, maxVal, minVal, averageVal, stand_devVal);
 
 			if(runs >= 5)
 			{

@@ -22,8 +22,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
-extern clock_t t;
 typedef enum logger_status
 {
 	DISABLED,    //logger is off
@@ -61,8 +59,8 @@ typedef enum function_called
 	TRANSFERADC_TASK, //transferADC_task() called
 	PROCESSSIGNAL_TASK, //processSignal_task() called
 	MAIN, //main() called
-	GENDACVALUES //genDACValues() called
-
+	GENDACVALUES, //genDACValues() called
+	INITADC //initADC() called
 }function_called;
 
 extern _Bool log_a;
@@ -131,7 +129,7 @@ void log_string(uint8_t * str, logger_level level, function_called func);
 *
 * @return void
 */
-//void log_time();
+void log_time();
 
 /**
 * @brief Prints a temperature in Celsius

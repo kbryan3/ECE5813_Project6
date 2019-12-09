@@ -34,10 +34,7 @@ void Init_SysTick(void)
 
 /*void SysTick_Handler(void)
 {
-	__disable_irq();
-//	g_ticks++;
-	__enable_irq();
-
+	g_ticks++;
 }*/
 void log_enable()
 {
@@ -104,7 +101,7 @@ void log_string(uint8_t * str, logger_level level, function_called func)
 		printLevel(level);
 		printFunction(func);
 		PRINTF("%s",str);
-//		log_time();
+		log_time();
 		PRINTF("\n\r");
 #else
 		printf("%s", str);
@@ -151,19 +148,18 @@ void log_int(uint32_t * integer, logger_level level, function_called func)
 	}
 }
 
-/*void log_time()
+void log_time()
 {
-	t = clock();
-	uint32_t ticks = (uint32_t) t;
-	uint32_t hours = ticks / 36000;
-	ticks = ticks - 36000 * hours;
-	uint32_t minutes = ticks / 600;
-	ticks = ticks - 600 * minutes;
-	uint32_t seconds = ticks / 10;
-	ticks = ticks - 10 * seconds;
+	uint32_t ticks = g_ticks;
+	uint32_t hours = ticks / 3600000;
+	ticks = ticks - 3600000 * hours;
+	uint32_t minutes = ticks / 60000;
+	ticks = ticks - 60000 * minutes;
+	uint32_t seconds = ticks / 1000;
+	ticks = ticks - 1000 * seconds;
 	PRINTF("%d:%d:%d:%d", hours, minutes, seconds, ticks);
 
-}*/
+}
 
 void printLevel(logger_level level)
 {
@@ -266,5 +262,9 @@ void printFunction(function_called func)
 	else if(func == GENDACVALUES)
 	{
 		PRINTF("genDACValues: ");
+	}
+	else if(func == INITADC)
+	{
+		PRINTF("initADC: ");
 	}
 }

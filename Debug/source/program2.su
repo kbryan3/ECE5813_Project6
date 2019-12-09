@@ -1,6 +1,6 @@
 fsl_adc16.h:500:24:ADC16_GetChannelConversionValue	16	static
 fsl_dma.h:558:20:DMA_StartTransfer	16	static
 program2.c:17:6:updateDAC_task	32	static
-program2.c:42:6:transferADC_task	64	static
-program2.c:94:6:processSignal_task	120	static
-program2.c:168:13:timerLEDOff	16	static
+program2.c:42:6:transferADC_task	56	static
+program2.c:93:6:processSignal_task	120	static
+program2.c:167:13:timerLEDOff	16	static

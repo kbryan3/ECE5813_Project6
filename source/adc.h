@@ -16,6 +16,7 @@
 #include "fsl_adc16.h"
 #include "fsl_debug_console.h"
 #include <stdio.h>
+#include "logger.h"
 
 extern	adc16_config_t adc16ConfigStruct;
 extern  adc16_channel_config_t adc16ChannelConfigStruct;

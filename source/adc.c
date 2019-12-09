@@ -24,11 +24,11 @@ void initADC()
 #if defined(FSL_FEATURE_ADC16_HAS_CALIBRATION) && FSL_FEATURE_ADC16_HAS_CALIBRATION
     if (kStatus_Success == ADC16_DoAutoCalibration(ADC0))
     {
-        PRINTF("\r\nADC16_DoAutoCalibration() Done\r\n.");
+        log_string((uint8_t*)"\r\nADC16_DoAutoCalibration() Done\r\n.", DBUG, INITADC);
     }
     else
     {
-        PRINTF("ADC16_DoAutoCalibration() Failed.\r\n");
+    	log_string((uint8_t*)"\r\nADC16_DoAutoCalibration() FAILED\n\r.", DBUG, INITADC);
     }
 #endif /* FSL_FEATURE_ADC16_HAS_CALIBRATION */
 

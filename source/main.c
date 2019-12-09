@@ -66,6 +66,7 @@
 uint16_t dacVal[50];
 uint16_t count;
 logger_level log_level;
+_Bool log_a;
 adc16_config_t adc16ConfigStruct;
 adc16_channel_config_t adc16ChannelConfigStruct;
 dma_handle_t DMA_Handle;
@@ -75,7 +76,7 @@ uint16_t dmaBuffer[64];
 bool g_dma_done_flag;
 bool g_halfsecond;
 SemaphoreHandle_t xLEDMutex;
-clock_t t;
+uint32_t g_ticks;
 
 #ifdef PROGRAM1
 /* The callback function. */
@@ -91,13 +92,15 @@ int main(void) {
 	TimerHandle_t SwTimerHandle = NULL;
 #endif
   	/* Init board hardware. */
-	t = clock();
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitBootPeripherals();
   	/* Init FSL debug console. */
     BOARD_InitDebugConsole();
     initializeLEDs();
+    log_a = 1;
+    g_ticks = 0;
+   // Init_SysTick();
 #ifdef STATUS
     log_level = 2;
 #else
