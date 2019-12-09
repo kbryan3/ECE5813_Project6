@@ -150,6 +150,9 @@ void log_int(uint32_t * integer, logger_level level, function_called func)
 
 void log_time()
 {
+	//converts ticks to time values and prints them
+		//algorithm leveraged from
+		//https://stackoverflow.com/questions/50727304/convert-milliseconds-to-hoursminutessecondsmilliseconds-in-c
 	uint32_t ticks = g_ticks;
 	uint32_t hours = ticks / 3600000;
 	ticks = ticks - 3600000 * hours;
